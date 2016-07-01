@@ -20,4 +20,24 @@ There could be a few `Worker`s launched. Each listens for the `Nqueue` queue. On
 
 ## Setup
 
-**TBD**
+First of all it's needed to setup `RabbitMQ`. It's easy and well described at: [their site](https://www.rabbitmq.com/download.html). I used `Homebrew` at my Mac. 
+
+```
+brew update
+brew install rabbitmq
+/usr/local/sbin/rabbitmq-server
+```
+
+Then you may check if it works by link: [http://localhost:15672/](http://localhost:15672/). Simple interface allows to create a queue and publish messages there. 
+
+Compile and run `Worker` and `Manager` classes. The following `RabbitMQ` client lib is used: `com.rabbitmq:amqp-client:3.6.2`. First of all you may run a few `Workers` and then one `Manager` that will immidiately makes things run. 
+
+## Code structure
+
+The code is divided to three files:
+
+1. `Generator.java` - is responsible for Armstrong Number calculations and throwing them to the queue. The calculation algorithm is described [here](https://github.com/shamily/ArmstrongNumbers). It uses `BigInteger`, while it would also be possible to execute specific algorithm depending of the size of the numbers which needs to be calculated.
+2. `Worker.java` - uses `Generator.java` class and works with the relevant queues. It has a `main` method.
+3. `Manager.java` - works with the relevant queues and prints the results to the console. It has a `main` method.
+
+It's very good described [here](https://www.rabbitmq.com/tutorials/tutorial-one-java.html) how to work with `RabbitMQ` client in Java. 
